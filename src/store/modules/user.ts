@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+// import { getToken, setToken, removeToken } from '../../utils/auth'
 import { login, logout, getUserInfo } from '@/api/system/user'
 
 interface UserState {
@@ -24,6 +25,7 @@ export const useUserStore = defineStore('user', {
       const { username, password } = userInfo
       const res = await login({ username: username.trim(), password })
       this.token = res.data.token
+      setToken(res.data.token)
     },
     //获取用户信息
     async getUserInfo() {

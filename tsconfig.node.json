@@ -13,6 +13,7 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "composite": true, // 只加这一行，解决所有报错
 
     /* Linting */
     "noUnusedLocals": true,

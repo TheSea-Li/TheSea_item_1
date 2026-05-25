@@ -24,12 +24,12 @@ export default defineConfig({
   resolve: {
     //配置路径别名，以后道路文件不用写../../了
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '@api': resolve(__dirname, 'src/api'),
-      '@components': resolve(__dirname, 'src/components'),
-      '@hooks': resolve(__dirname, 'src/hooks'),
-      '@utils': resolve(__dirname, 'src/utils'),
-      '@store': resolve(__dirname, 'src/store')
+      '@': resolve(__dirname, './src'),
+      '@api': resolve(__dirname, './src/api'),
+      '@components': resolve(__dirname, './src/components'),
+      '@hooks': resolve(__dirname, './src/hooks'),
+      '@utils': resolve(__dirname, './src/utils'),
+      '@store': resolve(__dirname, './src/store')
     }
   },
   server: {

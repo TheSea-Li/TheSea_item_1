@@ -1,4 +1,5 @@
-const TokenKey = 'Admin-token'
+const TokenKey = 'Admin-Token'
+
 export function getToken() {
   return localStorage.getItem(TokenKey)
 }
