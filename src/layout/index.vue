@@ -8,17 +8,19 @@
         </div>
         <el-menu :default-active="$route.path" router mode="vertical" class="sidebar-menu">
           <template v-for="item in menuList" :key="item.path">
+            <!-- 一级菜单：无子节点 -->
             <el-menu-item v-if="!item.children" :index="item.path">
-              <el-icon><component :is="item.meta.icon" /></el-icon>
-              <span>{{ item.meta.title }}</span>
+              <el-icon><component :is="item.meta?.icon" /></el-icon>
+              <span>{{ item.meta?.title }}</span>
             </el-menu-item>
+            <!-- 二级菜单：有子节点 -->
             <el-sub-menu v-else :index="item.path">
               <template #title>
-                <el-icon><component :is="item.meta.icon" /></el-icon>
-                <span>{{ item.meta.title }}</span>
+                <el-icon><component :is="item.meta?.icon" /></el-icon>
+                <span>{{ item.meta?.title }}</span>
               </template>
               <el-menu-item v-for="child in item.children" :key="child.path" :index="child.path">
-                {{ child.meta.title }}
+                {{ child.meta?.title }}
               </el-menu-item>
             </el-sub-menu>
           </template>
@@ -60,17 +62,24 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store/modules/user'
 import { usePermissionStore } from '@/store/modules/permission'
+import { ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
+// 路由实例
+const router = useRouter()
 const userStore = useUserStore()
 const permissionStore = usePermissionStore()
 
 const title = import.meta.env.VITE_APP_TITLE
-const menuList = computed(() => permissionStore.routes)
+// 修复：过滤隐藏菜单 + 可选链，解决TS报错
+const menuList = computed(() => permissionStore.routes.filter((item) => !item.meta?.hidden))
 
 const toggleSidebar = () => {
   // 后续实现侧边栏折叠功能
 }
 
+// 退出登录
 const handleCommand = (command: string) => {
   if (command === 'logout') {
     ElMessageBox.confirm('确定要退出登录吗？', '提示', {

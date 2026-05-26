@@ -14,6 +14,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
+// 开发环境启用 mock
+if (import.meta.env.DEV) {
+  import('./mock')
+}
+
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)

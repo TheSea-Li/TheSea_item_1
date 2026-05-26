@@ -18,12 +18,14 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@types/mockjs": "^1.0.10",
     "@types/node": "^24.12.4",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "eslint-plugin-vue": "^10.9.1",
     "husky": "^8.0.0",
     "less": "^4.6.4",
+    "mockjs": "^1.1.0",
     "typescript": "~6.0.2",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.1.0",
