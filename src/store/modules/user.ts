@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-// import { getToken, setToken, removeToken } from '../../utils/auth'
 import { login, logout, getUserInfo } from '@/api/system/user'
 
 interface UserState {

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 import { usePermissionStore } from '@/store/modules/permission'
+import { ElMessage } from 'element-plus'
 
 // 静态路由：所有人都能访问
 export const constantRoutes = [
@@ -8,6 +9,20 @@ export const constantRoutes = [
     path: '/login',
     component: () => import('@/views/login/index.vue'),
     meta: { hidden: true }
+  },
+  // 👇 新增：根路径 / 对应的配置（核心！）
+  {
+    path: '/',
+    component: () => import('@/layout/index.vue'), // 布局组件（后台外壳）
+    redirect: '/home', // 访问 / 自动跳转到 /home
+    children: [
+      {
+        path: 'home',
+        component: () => import('@/layout/index.vue'), // 首页页面
+        name: 'Home',
+        meta: { title: '首页', icon: 'Home' }
+      }
+    ]
   }
 ]
 

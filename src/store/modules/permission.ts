@@ -26,7 +26,7 @@ export const usePermissionStore = defineStore('permission', {
   }),
 
   actions: {
-    async generateRoutes() {
+    async generateRoutes(roles: string[]) {
       const { data } = await getRoutes()
       const asyncRoutes = this.convertRoutes(data as MenuItem[])
 

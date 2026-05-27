@@ -52,7 +52,7 @@
 
         <!-- 页面内容 -->
         <el-main class="main-content">
-          <router-view />
+          <!-- <router-view /> -->
         </el-main>
       </el-container>
     </el-container>
