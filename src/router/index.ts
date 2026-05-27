@@ -10,7 +10,7 @@ export const constantRoutes = [
     component: () => import('@/views/login/index.vue'),
     meta: { hidden: true }
   },
-  // 👇 新增：根路径 / 对应的配置（核心！）
+  // 新增：根路径 / 对应的配置（核心！）
   {
     path: '/',
     component: () => import('@/layout/index.vue'), // 布局组件（后台外壳）
@@ -35,6 +35,10 @@ const router = createRouter({
 })
 
 // 路由守卫
+// 这三个参数，是路由跳转前，Vue自动塞进来的！
+// to	你要去哪里（目标路由对象）
+// from	你从哪里来（当前页面路由对象）
+// next	放行 / 跳转函数
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
@@ -69,6 +73,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // 没有token
     if (['/login'].includes(to.path)) {
+      //next() 是 Vue Router 路由守卫的「放行指令」.它是一个必须调用的函数，不调用路由会直接卡死.作用：告诉路由「可以继续跳转了」
       next()
     } else {
       next(`/login?redirect=${to.path}`)

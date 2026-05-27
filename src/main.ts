@@ -7,7 +7,7 @@ import ElementPlus from 'element-plus' // 导入Element Plus UI组件库
 import 'element-plus/dist/index.css' // 导入Element Plus的【默认样式】
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 导入Element Plus所有图标
 import './styles/index.css' // 导入【项目自定义全局样式】
-// 2. 创建Vue应用实例
+// 2. 创建Vue应用实例,指定根组件是 App.vue
 const app = createApp(App)
 
 // 3.全局注册Element Plus图标

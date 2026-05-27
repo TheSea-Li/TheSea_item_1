@@ -11,6 +11,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BaseForm: typeof import('./components/BaseForm/index.vue')['default']
+    BaseSearch: typeof import('./components/BaseSearch/index.vue')['default']
+    BaseTable: typeof import('./components/BaseTable/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']

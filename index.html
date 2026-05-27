@@ -1,13 +1,22 @@
+<!-- 这是整个项目唯一的 HTML 文件，Vue 是单页应用（SPA），整个项目就靠这一个页面承载 -->
+
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- 编码格式：UTF-8，支持中文 -->
     <meta charset="UTF-8" />
+    <!-- 网站图标 -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- 适配手机端 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 浏览器标签页标题 -->
     <title>managesystem</title>
   </head>
   <body>
+    <!-- 🌟 核心中的核心：Vue 的挂载点（容器） -->
     <div id="app"></div>
+
+    <!-- 🌟 第二个核心：加载 Vue 入口文件，启动项目 -->
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
