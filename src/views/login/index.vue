@@ -107,6 +107,8 @@ const loginRules = reactive({
 
 // 5. 核心方法：登录逻辑
 const handleLogin = async () => {
+  console.log('点击触发登录')
+
   // 如果表单实例不存在，直接返回
   if (!loginFormRef.value) return
   // 执行表单校验（不满足规则会报错）
@@ -119,6 +121,8 @@ const handleLogin = async () => {
     await userStore.login(loginForm)
     // 登录成功后：跳转到首页 / 重定向地址
     const redirect = route.query.redirect || '/'
+    console.log('redirect的值：', redirect)
+
     router.push(redirect as string)
   } catch (error) {
     // 登录失败：打印错误

@@ -15,10 +15,11 @@ export const constantRoutes = [
     path: '/',
     component: () => import('@/layout/index.vue'), // 布局组件（后台外壳）
     redirect: '/home', // 访问 / 自动跳转到 /home
+    meta: { hidden: true },
     children: [
       {
-        path: 'home',
-        component: () => import('@/layout/index.vue'), // 首页页面
+        path: '/home',
+        component: () => import('@/views/home/index.vue'), // 首页页面
         name: 'Home',
         meta: { title: '首页', icon: 'Home' }
       }
@@ -27,7 +28,35 @@ export const constantRoutes = [
 ]
 
 // 动态路由：需要权限才能访问
-export const asyncRoutes = []
+export const asyncRoutes = [
+  {
+    path: '/system',
+    name: 'System',
+    component: () => import('@/layout/index.vue'),
+    meta: { title: '系统管理', icon: 'Setting' },
+    redirect: '/system/user',
+    children: [
+      {
+        path: '/system/user',
+        name: 'User',
+        component: () => import('@/views/system/user/index.vue'),
+        meta: { title: '用户管理' }
+      },
+      {
+        path: '/system/role',
+        name: 'Role',
+        component: () => import('@/views/system/role/index.vue'),
+        meta: { title: '角色管理' }
+      },
+      {
+        path: '/system/menu',
+        name: 'Menu',
+        component: () => import('@/views/system/menu/index.vue'),
+        meta: { title: '菜单管理' }
+      }
+    ]
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,27 +72,27 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
 
-  // 有token
   if (userStore.token) {
+    console.log('路由111')
+    // 已登录，访问登录页 → 跳首页
     if (to.path === '/login') {
       next('/')
     } else {
-      // 判断是否已经获取了用户信息
+      console.log('userStore的值：', userStore)
+
+      // 未获取用户信息 → 先获取
       if (userStore.roles.length === 0) {
         try {
-          // 获取用户信息
-          await userStore.getUserInfo()
-          // 根据用户权限生成可访问的路由
-          const accessRoutes = await permissionStore.generateRoutes(userStore.roles)
+          const data = await userStore.getUserInfo()
+          //  修复：无参调用（匹配permission.ts定义）
+          const accessRoutes = await permissionStore.generateRoutes()
           // 动态添加路由
-          accessRoutes.forEach((route) => {
-            router.addRoute(route)
-          })
-          next({ ...to, replace: true })
+          accessRoutes.forEach((route) => router.addRoute(route))
+          next(to.fullPath)
         } catch (error) {
-          // 获取用户信息失败，重置token并跳转到登录页
-          await userStore.resetToken()
-          ElMessage.error('获取用户信息失败，请重新登录')
+          //  修复：调用 logout 而非 resetToken
+          await userStore.logout()
+          ElMessage.error('登录已过期，请重新登录')
           next(`/login?redirect=${to.path}`)
         }
       } else {
@@ -71,9 +100,9 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    // 没有token
-    if (['/login'].includes(to.path)) {
-      //next() 是 Vue Router 路由守卫的「放行指令」.它是一个必须调用的函数，不调用路由会直接卡死.作用：告诉路由「可以继续跳转了」
+    console.log('路由222')
+    // 未登录 → 只放行登录页
+    if (to.path === '/login') {
       next()
     } else {
       next(`/login?redirect=${to.path}`)

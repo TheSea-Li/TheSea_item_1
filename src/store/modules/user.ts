@@ -28,6 +28,7 @@ export const useUserStore = defineStore('user', {
     },
     //获取用户信息
     async getUserInfo() {
+      console.log('调用getUserInfo')
       const res = await getUserInfo()
       this.name = res.data.name
       this.avatar = res.data.avatar
@@ -38,6 +39,7 @@ export const useUserStore = defineStore('user', {
 
     // 退出登录
     async logout() {
+      console.log('调用logout')
       await logout()
       this.token = ''
       this.roles = []

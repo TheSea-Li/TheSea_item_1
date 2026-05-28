@@ -1,64 +1,53 @@
 import axios from 'axios'
-import { useUserStore } from '@store/modules/user'
 import { ElMessage, ElMessageBox } from 'element-plus'
-// 创建axios实例
+
 const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API, //从环境变量获取接口地址
-  timeout: 15000 //请求超时时间
+  baseURL: import.meta.env.VITE_APP_BASE_API,
+  timeout: 15000
 })
 
-//请求拦截器
+// 请求拦截器：修复 Pinia 调用方式（避免实例化报错）
 service.interceptors.request.use(
-  (config) => {
+  async (config) => {
+    // 延迟导入 useUserStore，避免初始化报错
+    const { useUserStore } = await import('@/store/modules/user')
     const userStore = useUserStore()
-    //自动添加token
+
     if (userStore.token) {
       config.headers.Authorization = `Bearer ${userStore.token}`
     }
     return config
   },
-  (error) => {
-    console.log(error)
-    return Promise.reject(error)
-  }
+  (error) => Promise.reject(error)
 )
 
-//响应拦截器
+// 响应拦截器：修复 401 逻辑 + 删除不存在的 resetToken
 service.interceptors.response.use(
   (response) => {
     const res = response.data
-    //这里的code要和后端约定好，比如200表示成功
-    if (res.code !== 200) {
-      ElMessage({
-        message: res.message || '请求失败',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    }
 
-    //401:token过期或未登录
-    if (res.code === 401) {
+    // 后端返回非200，直接抛出错误
+    if (res.code !== 200) {
+      ElMessage.error(res.message || '请求失败')
+      return Promise.reject(res)
+    }
+    return res
+  },
+  async (error) => {
+    // 401 未登录/ token过期
+    if (error.response?.status === 401) {
       ElMessageBox.confirm('登录已过期，请重新登录', '提示', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
+      }).then(async () => {
+        const { useUserStore } = await import('@/store/modules/user')
         const userStore = useUserStore()
-        userStore.resetToken()
+        // 替换为你存在的 logout 方法
+        await userStore.logout()
         location.reload()
       })
-      return Promise.reject(new Error(res.message || '请求失败'))
     } else {
-      return res
+      ElMessage.error(error.message || '网络异常')
     }
-  },
-  (error) => {
-    console.log('err' + error)
-    ElMessage({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
     return Promise.reject(error)
   }
 )

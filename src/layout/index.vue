@@ -52,7 +52,7 @@
 
         <!-- 页面内容 -->
         <el-main class="main-content">
-          <!-- <router-view /> -->
+          <router-view />
         </el-main>
       </el-container>
     </el-container>
@@ -65,6 +65,7 @@ import { usePermissionStore } from '@/store/modules/permission'
 import { ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 // 路由实例
 const router = useRouter()
@@ -73,7 +74,10 @@ const permissionStore = usePermissionStore()
 
 const title = import.meta.env.VITE_APP_TITLE
 // 修复：过滤隐藏菜单 + 可选链，解决TS报错
-const menuList = computed(() => permissionStore.routes.filter((item) => !item.meta?.hidden))
+const menuList = computed<RouteRecordRaw[]>(() =>
+  permissionStore.fullRoutes.filter((item: RouteRecordRaw) => !item.meta?.hidden)
+)
+console.log('menuList:', menuList)
 
 const toggleSidebar = () => {
   // 后续实现侧边栏折叠功能

@@ -17,11 +17,10 @@ export function getUserInfo() {
   })
 }
 
-// 退出登录
+// 模拟退出登录
 export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({ code: 200 }), 300)
   })
 }
 

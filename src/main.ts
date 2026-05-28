@@ -7,7 +7,9 @@ import ElementPlus from 'element-plus' // 导入Element Plus UI组件库
 import 'element-plus/dist/index.css' // 导入Element Plus的【默认样式】
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 导入Element Plus所有图标
 import './styles/index.css' // 导入【项目自定义全局样式】
-// 2. 创建Vue应用实例,指定根组件是 App.vue
+import globalComponents from '@/components/index'
+import directives from '@/directives'
+// 2. 创建Vue应用实例,指定根组件是 App.vue。这个实例不是页面，不是 DOM，是一个JavaScript 对象，是整个应用的大脑。
 const app = createApp(App)
 
 // 3.全局注册Element Plus图标
@@ -20,6 +22,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 if (import.meta.env.DEV) {
   import('./mock')
 }
+
+app.use(directives)
+app.use(globalComponents)
 
 // 5. 安装全局插件（Vue3固定用法：app.use(插件)）
 app.use(pinia) // 安装状态管理Pinia

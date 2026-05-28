@@ -34,15 +34,15 @@ export default defineConfig({
   },
   server: {
     port: 3000, // 改成3000端口，和后端常用端口区分
-    open: true, // 启动后自动打开浏览器
-    proxy: {
-      // 配置代理，解决跨域问题
-      '/api': {
-        target: 'http://localhost:8080', //后端接口地址
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
+    open: true // 启动后自动打开浏览器
+    // proxy: {
+    //   // 配置代理，解决跨域问题
+    //   '/api': {
+    //     target: 'http://localhost:8080', //后端接口地址
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '')
+    //   }
+    // }
   },
   build: {
     rollupOptions: {

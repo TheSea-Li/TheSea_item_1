@@ -7,30 +7,33 @@ export interface OptionItem {
   value: string | number
 }
 
-/** 搜索栏每一项配置 */
+// 搜索项类型
+export type SearchItemType = 'input' | 'select' | 'date'
 export interface SearchItem {
   prop: string
   label: string
-  type: 'input' | 'select' | 'date'
+  type: SearchItemType
+  options?: { label: string; value: any }[]
   placeholder?: string
-  options?: OptionItem[]
 }
 
-/** 表格列配置 */
-export interface TableColumn {
-  prop: string
-  label: string
-  width?: string | number
-  align?: 'left' | 'center' | 'right'
-  slot?: string
-}
-
-/** 表单项配置 */
+// 表单项类型
+export type FormItemType = 'input' | 'select' | 'password' | 'textarea'
 export interface FormItem {
   prop: string
   label: string
-  type: 'input' | 'password' | 'select' | 'textarea'
-  placeholder?: string
-  options?: OptionItem[]
+  type: FormItemType
+  options?: { label: string; value: any }[]
   disabled?: boolean
+  placeholder?: string
+}
+
+// 表格列类型
+export interface TableColumn {
+  prop?: string
+  label: string
+  width?: string | number
+  align?: string
+  slot?: string
+  render?: (row: any) => any
 }

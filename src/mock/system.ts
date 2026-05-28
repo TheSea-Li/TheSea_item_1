@@ -11,6 +11,17 @@ export const login = () => {
   }
 }
 
+// 用户退出
+export const logout = () => {
+  return {
+    code: 200,
+    message: '退出成功',
+    data: {
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+    }
+  }
+}
+
 // 获取用户信息
 export const getUserInfo = () => {
   return {

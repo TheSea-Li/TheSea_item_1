@@ -7,21 +7,18 @@
         :label="item.label"
         :prop="item.prop"
       >
-        <!-- 输入框 -->
         <el-input
           v-if="item.type === 'input'"
           v-model="formData[item.prop]"
           :placeholder="item.placeholder || `请输入${item.label}`"
           :disabled="item.disabled"
         />
-        <!-- 密码框 -->
         <el-input
           v-else-if="item.type === 'password'"
           v-model="formData[item.prop]"
           type="password"
           :placeholder="item.placeholder || `请输入${item.label}`"
         />
-        <!-- 下拉框 -->
         <el-select
           v-else-if="item.type === 'select'"
           v-model="formData[item.prop]"
@@ -34,7 +31,6 @@
             :value="opt.value"
           />
         </el-select>
-        <!-- 文本域 -->
         <el-input
           v-else-if="item.type === 'textarea'"
           v-model="formData[item.prop]"
@@ -56,5 +52,6 @@ const props = defineProps<{
   rules?: Record<string, any>
 }>()
 
-const formRef = defineExpose({ formRef })
+const formRef = ref()
+defineExpose({ formRef })
 </script>

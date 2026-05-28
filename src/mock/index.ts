@@ -1,5 +1,5 @@
 // 导入你写的 Mock 函数
-import { login, getUserInfo, getRoutes } from './system'
+import { login, getUserInfo, getRoutes, logout } from './system'
 import Mock from 'mockjs'
 
 // 模拟网络延迟
@@ -12,5 +12,6 @@ Mock.mock('/api/user/login', 'post', login)
 Mock.mock('/api/user/info', 'get', getUserInfo)
 // 3. 获取路由菜单接口
 Mock.mock('/api/system/routes', 'get', getRoutes)
+Mock.mock('/api/user/logout', 'post', logout)
 
 export default Mock

@@ -8,34 +8,27 @@
       style="width: 100%"
       @selection-change="handleSelection"
     >
-      <!-- 多选框 -->
       <el-table-column v-if="showSelection" type="selection" width="55" align="center" />
-
-      <!-- 序号 -->
       <el-table-column v-if="showIndex" label="序号" width="70" align="center">
         <template #default="scope">
           {{ (pagination.pageNum - 1) * pagination.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <!-- 动态列 -->
       <el-table-column
         v-for="column in columns"
-        :key="column.prop"
+        :key="column.prop || column.slot"
         :label="column.label"
         :prop="column.prop"
         :width="column.width"
         :align="column.align || 'center'"
       >
         <template #default="scope">
-          <!-- 自定义渲染 -->
           <slot v-if="column.slot" :name="column.slot" :row="scope.row" />
-          <!-- 普通文本 -->
-          <span v-else>{{ scope.row[column.prop] }}</span>
+          <span v-else>{{ scope.row[column.prop!] }}</span>
         </template>
       </el-table-column>
 
-      <!-- 操作列 -->
       <el-table-column v-if="showOperation" label="操作" width="180" align="center" fixed="right">
         <template #default="scope">
           <slot name="operation" :row="scope.row" />
@@ -43,7 +36,6 @@
       </el-table-column>
     </el-table>
 
-    <!-- 分页 -->
     <el-pagination
       v-if="pagination.total > 0"
       class="pagination"
@@ -60,19 +52,22 @@
 
 <script setup lang="ts">
 import type { TableColumn } from '@/types/components'
-import type { PaginationParams } from '@/types/table'
 
 const props = defineProps<{
   dataList: any[]
   loading: boolean
-  pagination: PaginationParams
+  pagination: any
   columns: TableColumn[]
   showSelection?: boolean
   showIndex?: boolean
   showOperation?: boolean
 }>()
 
-const emit = defineEmits(['pageChange', 'sizeChange', 'selectionChange'])
+const emit = defineEmits<{
+  pageChange: [page: number]
+  sizeChange: [size: number]
+  selectionChange: [val: any[]]
+}>()
 
 const handlePageChange = (page: number) => emit('pageChange', page)
 const handleSizeChange = (size: number) => emit('sizeChange', size)
